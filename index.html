@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduAdapt - Authentication</title>
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        <h2 id="form-title">Login to EduAdapt</h2>
+        <form id="auth-form">
+            <div class="input-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" required placeholder="e.g., student@student.mes.ac.in">
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn-primary" id="submit-btn">Login</button>
+        </form>
+        <p class="toggle-text">Don't have an account? <span id="toggle-form">Sign Up</span></p>
+    </div>
+    <script src="auth.js"></script>
+</body>
+</html>
