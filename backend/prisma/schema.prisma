@@ -1,13 +1,167 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+  ADMIN
+}
+
+model School {
+  id         String    @id @default(uuid())
+  name       String
+  code       String    @unique
+  createdAt  DateTime  @default(now())
+
+  users      User[]
+  courses    Course[]
+}
+
+model User {
+  id           String    @id @default(uuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  role         Role      @default(STUDENT)
+  schoolId     String
+  createdAt    DateTime  @default(now())
+
+  school          School            @relation(fields: [schoolId], references: [id])
+  courses         Course[]          @relation("TeacherCourses")
+  enrollments     Enrollment[]
+  gameSessions    GameSession[]
+  progress        StudentProgress[]
+  badges          UserBadge[]
+  leaderboard     Leaderboard[]
+  notifications   Notification[]
+  engagementLogs  EngagementLog[]
+}
+
+model Course {
+  id         String    @id @default(uuid())
+  title      String
+  teacherId  String
+  schoolId   String
+  createdAt  DateTime  @default(now())
+
+  teacher     User         @relation("TeacherCourses", fields: [teacherId], references: [id])
+  school      School       @relation(fields: [schoolId], references: [id])
+  lessons     Lesson[]
+  enrollments Enrollment[]
+  leaderboard Leaderboard[]
+}
+
+model Lesson {
+  id          String   @id @default(uuid())
+  title       String
+  content     String
+  courseId    String
+  orderIndex  Int
+  createdAt   DateTime @default(now())
+
+  course       Course            @relation(fields: [courseId], references: [id])
+  gameSessions GameSession[]
+  progress     StudentProgress[]
+}
+
+model Enrollment {
+  id         String   @id @default(uuid())
+  studentId  String
+  courseId   String
+  enrolledAt DateTime @default(now())
+
+  student User   @relation(fields: [studentId], references: [id])
+  course  Course @relation(fields: [courseId], references: [id])
+
+  @@unique([studentId, courseId])
+}
+
+model GameSession {
+  id             String   @id @default(uuid())
+  studentId      String
+  lessonId       String
+  score          Int
+  accuracy       Float
+  timeSpentSec   Int
+  difficultyLevel Int
+  playedAt       DateTime @default(now())
+
+  student User   @relation(fields: [studentId], references: [id])
+  lesson  Lesson @relation(fields: [lessonId], references: [id])
+}
+
+model StudentProgress {
+  id           String   @id @default(uuid())
+  studentId    String
+  lessonId     String
+  masteryScore Float    @default(0)
+  attempts     Int      @default(0)
+  lastUpdated  DateTime @updatedAt
+
+  student User   @relation(fields: [studentId], references: [id])
+  lesson  Lesson @relation(fields: [lessonId], references: [id])
+
+  @@unique([studentId, lessonId])
+}
+
+model Badge {
+  id          String @id @default(uuid())
+  name        String
+  description String
+  iconUrl     String
+  criteria    String
+
+  userBadges UserBadge[]
+}
+
+model UserBadge {
+  id        String   @id @default(uuid())
+  userId    String
+  badgeId   String
+  awardedAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id])
+  badge Badge @relation(fields: [badgeId], references: [id])
+
+  @@unique([userId, badgeId])
+}
+
+model Leaderboard {
+  id          String   @id @default(uuid())
+  studentId   String
+  courseId    String
+  totalPoints Int      @default(0)
+  rank        Int      @default(0)
+  updatedAt   DateTime @updatedAt
+
+  student User   @relation(fields: [studentId], references: [id])
+  course  Course @relation(fields: [courseId], references: [id])
+
+  @@unique([studentId, courseId])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model EngagementLog {
+  id        String   @id @default(uuid())
+  userId    String
+  action    String
+  metadata  String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
 }
