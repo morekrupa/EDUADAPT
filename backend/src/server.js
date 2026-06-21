@@ -7,6 +7,8 @@ const userRoutes = require('./routes/userRoutes');
 const schoolRoutes = require('./routes/schoolRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const courseRoutes = require('./routes/courseRoutes');
+const gameRoutes = require('./routes/gameRoutes');
+const studentDataRoutes = require('./routes/studentDataRoutes');
 
 const app = express();
 
@@ -18,7 +20,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/schools', schoolRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/courses', courseRoutes);
-
+app.use('/api/game', gameRoutes);
+app.use('/api/students', studentDataRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'EduAdapt API is running' });
