@@ -41,6 +41,7 @@ model User {
   leaderboard     Leaderboard[]
   notifications   Notification[]
   engagementLogs  EngagementLog[]
+  recommendations Recommendation[]
 }
 
 model Course {
@@ -164,4 +165,22 @@ model EngagementLog {
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
+}
+
+enum RecommendationType {
+  NEXT_LESSON
+  DIFFICULTY_ADJUSTMENT
+  DROPOUT_RISK
+  CONTENT_SUGGESTION
+}
+
+model Recommendation {
+  id        String              @id @default(uuid())
+  studentId String
+  type      RecommendationType
+  payload   Json
+  isActive  Boolean             @default(true)
+  createdAt DateTime            @default(now())
+
+  student User @relation(fields: [studentId], references: [id])
 }

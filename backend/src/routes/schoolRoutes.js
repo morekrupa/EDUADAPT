@@ -1,14 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const { verifyToken, checkRole } = require('../middleware/authMiddleware');
+const { handleValidationErrors } = require('../middleware/handleValidationErrors');
+const {
+  validateSchoolRegister,
+  validateAddSchoolUser,
+  validateAnnouncement,
+} = require('../middleware/validators');
 const schoolController = require('../controllers/schoolController');
 
-// Public — no school exists yet for the first admin to authenticate against
-router.post('/register', schoolController.registerSchool);
-
-// Admin-only — scoped to the admin's own school via req.user.schoolId
-router.post('/teachers', verifyToken, checkRole('ADMIN'), schoolController.addTeacher);
-router.post('/students', verifyToken, checkRole('ADMIN'), schoolController.addStudent);
-router.post('/announcements', verifyToken, checkRole('ADMIN'), schoolController.sendAnnouncement);
+router.post('/register', validateSchoolRegister, handleValidationErrors, schoolController.registerSchool);
+router.post('/teachers', verifyToken, checkRole('ADMIN'), validateAddSchoolUser, handleValidationErrors, schoolController.addTeacher);
+router.post('/students', verifyToken, checkRole('ADMIN'), validateAddSchoolUser, handleValidationErrors, schoolController.addStudent);
+router.post('/announcements', verifyToken, checkRole('ADMIN'), validateAnnouncement, handleValidationErrors, schoolController.sendAnnouncement);
 
 module.exports = router;
