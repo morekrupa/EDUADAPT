@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Conditional Signup</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <script src="js/theme.js"></script>
+</head>
+<body>
+    <button id="theme-toggle-btn" class="btn-theme-toggle" onclick="toggleTheme()">🌙 Dark</button>
+    <canvas id="network-canvas"></canvas>
+    <div class="auth-viewport-wrapper">
+        <div class="auth-container">
+            <h2>Register</h2>
+            <div class="role-badge student-badge">Student Account Initialization</div>
+            <form id="student-signup-form">
+                <div class="input-group"><label>Full Name</label><input type="text" id="s-name" required placeholder="e.g., Krupa More"></div>
+                <div class="input-group"><label>Class Identifier ID (Required)</label><input type="text" id="s-class-id" required placeholder="e.g., PCE-AIDS-B"></div>
+                <div class="input-group"><label>Email Address</label><input type="email" id="s-email" required placeholder="username@student.mes.ac.in"></div>
+                <div class="input-group"><label>Password</label><input type="password" id="s-pass" required placeholder="Minimum 8 characters"></div>
+                <div class="input-group"><label>Confirm Verification Password</label><input type="password" id="s-conf" required placeholder="Repeat chosen credentials"></div>
+                <button type="submit" class="btn-submit student-btn">Deploy Student Profile</button>
+            </form>
+            <p class="toggle-text">Possess a verified account? <a href="login-student.html">Login Here</a></p>
+        </div>
+    </div>
+    <script src="js/signup-student.js"></script>
+    <script src="js/bg-garden.js"></script>
+</body>
+</html>

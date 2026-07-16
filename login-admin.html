@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login Gateway</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <script src="js/theme.js"></script>
+</head>
+<body>
+    <button id="theme-toggle-btn" class="btn-theme-toggle" onclick="toggleTheme()">🌙 Dark</button>
+    <canvas id="network-canvas"></canvas>
+    <div class="auth-viewport-wrapper">
+        <div class="auth-container">
+            <h2>Login In</h2>
+            <div class="role-badge admin-badge">System Administrator</div>
+            <form id="admin-login-form">
+                <div class="input-group"><label>System Root Email</label><input type="email" required placeholder="admin@mes.ac.in"></div>
+                <div class="input-group"><label>Password</label><input type="password" required placeholder="••••••••"></div>
+                <button type="submit" class="btn-submit admin-btn">Authorize System Elevate</button>
+            </form>
+            <p class="toggle-text">First installation context? <a href="signup-admin.html">Register</a></p>
+            <p class="toggle-text"><a href="index.html">← Alternate Portal Roles</a></p>
+        </div>
+    </div>
+    <script>
+        document.getElementById('admin-login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert("Administrative baseline seed operational controllers are handled by backend scripts!");
+        });
+    </script>
+    <script src="js/bg-garden.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+.rank-wrapper { max-width: 400px; margin: 20px auto; padding: 0 16px 100px 16px; }
+h3 { margin-top: 24px; color: var(--primary); font-size: 16px; border-left: 4px solid var(--primary); padding-left: 8px; }
+.leaderboard-card { background: var(--bg-card); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border: 1px solid var(--border-color); }
+.rank-row { display: flex; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--border-color); font-size: 15px; color: var(--text-main); }
+.rank-row.podium { font-weight: bold; background: var(--primary-light); }
+.points { color: #f59e0b; font-weight: bold; }
+.badges-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+.badge { background: var(--bg-card); padding: 12px; border-radius: 12px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02); border: 1px solid var(--border-color); color: var(--text-main); }
+.badge-icon { font-size: 28px; margin-bottom: 6px; }
+.badge p { margin: 0; font-size: 11px; font-weight: 500; color: var(--text-main); }
+.badge.locked { filter: grayscale(100%); opacity: 0.4; background: var(--bg-secondary); }
+.nav-footer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card); display: flex; justify-content: space-around; padding: 14px 10px; border-top: 1px solid var(--border-color); z-index: 10; }
+.nav-btn { background: none; border: none; color: var(--text-muted); font-weight: bold; cursor: pointer; text-decoration: none; font-size: 14px; }
+.nav-btn.active { color: var(--primary); }

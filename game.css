@@ -1,0 +1,10 @@
+.game-container { width: 90%; max-width: 450px; margin: 40px auto; background: var(--bg-card); padding: 24px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid var(--border-color); }
+.game-header { display: flex; justify-content: space-between; margin-bottom: 24px; font-weight: bold; font-size: 16px; color: #f59e0b; }
+#question-text { font-size: 18px; line-height: 1.6; margin-bottom: 20px; color: var(--text-main); }
+.options-grid { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+.option-btn { background: var(--bg-secondary); border: 2px solid var(--border-color); padding: 14px; border-radius: 8px; color: var(--text-main); font-size: 15px; text-align: left; cursor: pointer; transition: background 0.2s, border-color 0.2s; font-weight: 500; }
+.option-btn:hover { background: var(--border-color); }
+.option-btn.correct { background: #10b981 !important; border-color: #059669 !important; color: white !important; }
+.option-btn.wrong { background: #ef4444 !important; border-color: #dc2626 !important; color: white !important; }
+.btn-action { margin-top: 20px; width: 100%; padding: 12px; background: #f59e0b; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: #0f172a; font-size: 16px; transition: background 0.2s ease; }
+.btn-action:hover { background: #d97706; }
