@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login Gateway</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <script src="js/theme.js"></script>
+</head>
+<body>
+    <button id="theme-toggle-btn" class="btn-theme-toggle" onclick="toggleTheme()">🌙 DARK</button>
+
+    <div class="auth-viewport-wrapper">
+        <div class="auth-container">
+            <h2>SIGN IN</h2>
+            <div class="role-badge student-badge">STUDENT PORTAL</div>
+            
+            <div class="login-fields-container">
+                <div class="input-group">
+                    <label for="log-email">Email Address</label>
+                    <input type="email" id="log-email" required placeholder="student@student.mes.ac.in">
+                </div>
+                <div class="input-group">
+                    <label for="log-pass">Password</label>
+                    <input type="password" id="log-pass" required placeholder="••••••••">
+                </div>
+                
+                <button type="button" class="btn-pixel btn-maroon" onclick="localStorage.setItem('authToken', 'mock_verified_session'); window.location.href='dashboard.html';">
+                    Authenticate Entry
+                </button>
+            </div>
+            
+            <p class="toggle-text">Need an account? <a href="signup-student.html">Create One Here</a></p>
+            <p class="toggle-text"><a href="index.html">← Alternate Portal Roles</a></p>
+        </div>
+    </div>
+
+    <script src="js/bg-garden.js"></script>
+</body>
+</html>

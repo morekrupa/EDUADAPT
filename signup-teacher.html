@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dependent Registration</title>
+    <!-- Base variable theme rules and onboarding component sheets -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <!-- Synchronous interface display controller -->
+    <script src="js/theme.js"></script>
+</head>
+<body>
+    <button id="theme-toggle-btn" class="btn-theme-toggle" onclick="toggleTheme()">🌙 Dark</button>
+    <canvas id="network-canvas"></canvas>
+    <div class="auth-viewport-wrapper">
+        <div class="auth-container">
+            <h2>Register</h2>
+            <div class="role-badge teacher-badge">Teacher Faculty Onboarding</div>
+            
+            <form id="teacher-signup-form">
+                <div class="input-group">
+                    <label for="t-name">Full Name</label>
+                    <input type="text" id="t-name" required placeholder="Dr. / Prof. Name">
+                </div>
+                
+                <!-- Institutional Entry Validation Gate -->
+                <div class="input-group">
+                    <label for="t-college-id">College / Admin ID (Required)</label>
+                    <input type="text" id="t-college-id" required placeholder="e.g., PCE-SAN-2026">
+                </div>
+                
+                <div class="input-group">
+                    <label for="t-email">Faculty Core Email</label>
+                    <input type="email" id="t-email" required placeholder="username@mes.ac.in">
+                </div>
+                
+                <div class="input-group">
+                    <label for="t-pass">Password</label>
+                    <input type="password" id="t-pass" required placeholder="Minimum 8 characters">
+                </div>
+                
+                <div class="input-group">
+                    <label for="t-conf">Confirm Password</label>
+                    <input type="password" id="t-conf" required placeholder="Repeat chosen credentials">
+                </div>
+                
+                <button type="submit" class="btn-submit teacher-btn">Verify & Create Faculty Entry</button>
+            </form>
+            
+            <p class="toggle-text">Registered? <a href="login-teacher.html">Login Here</a></p>
+        </div>
+    </div>
+    <script src="js/signup-teacher.js"></script>
+    <script src="js/bg-garden.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduAdapt - Engine Terminal</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/game.css">
+    <script src="js/theme.js"></script>
+</head>
+<body>
+    <button id="theme-toggle-btn" class="btn-theme-toggle" onclick="toggleTheme()">🌙 Dark</button>
+    <canvas id="network-canvas"></canvas>
+    <div class="game-container">
+        <div class="game-header">
+            <span id="timer-display">Telemetry Tracking: 0s</span>
+            <span id="score-counter">Session XP: 0</span>
+        </div>
+        <div id="quiz-box">
+            <h3 id="question-text">Requesting real-time generative context from engine models...</h3>
+            <div id="options-box" class="options-grid"></div>
+        </div>
+        <button id="next-btn" style="display:none;" class="btn-action">Commit Telemetry Logs & Return</button>
+    </div>
+    <script src="js/game.js"></script>
+    <script src="js/bg-garden.js"></script>
+</body>
+</html>

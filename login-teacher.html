@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Login Gateway</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <script src="js/theme.js"></script>
+</head>
+<body>
+    <button id="theme-toggle-btn" class="btn-theme-toggle" onclick="toggleTheme()">🌙 Dark</button>
+    <canvas id="network-canvas"></canvas>
+    <div class="auth-viewport-wrapper">
+        <div class="auth-container">
+            <h2>Login In</h2>
+            <div class="role-badge teacher-badge">Teacher Portal</div>
+            <form id="teacher-login-form">
+                <div class="input-group"><label>Faculty Email</label><input type="email" required placeholder="faculty@mes.ac.in"></div>
+                <div class="input-group"><label>Password</label><input type="password" required placeholder="••••••••"></div>
+                <button type="submit" class="btn-submit teacher-btn">Authenticate Faculty Identity</button>
+            </form>
+            <p class="toggle-text">Need an account? <a href="signup-teacher.html">Register Faculty Profile</a></p>
+            <p class="toggle-text"><a href="index.html">← Alternate Portal Roles</a></p>
+        </div>
+    </div>
+    <script>
+        document.getElementById('teacher-login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert("Teacher operations dash layout will load here once backend microservices are ready!");
+        });
+    </script>
+    <script src="js/bg-garden.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduAdapt - Configuration Terminal</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <script src="js/theme.js"></script>
+</head>
+<body>
+    <canvas id="network-canvas"></canvas>
+    <header class="profile-header">
+        <div class="avatar-container">
+            <div class="avatar-placeholder">🎓</div>
+        </div>
+        <h2 id="prof-name">Krupa More</h2>
+        <p id="prof-email">student@student.mes.ac.in</p>
+    </header>
+
+    <main class="profile-viewport">
+        <section class="info-group">
+            <h3>System Mode Config</h3>
+            <div class="info-row">
+                <span class="label">System Interface Theme:</span>
+                <button id="theme-toggle-btn" class="btn-theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+            </div>
+        </section>
+
+        <section class="info-group">
+            <h3>Academic Vector Profiles</h3>
+            <div class="info-row"><span class="label">Roll Allocation:</span><span class="value">A 6 3 5</span></div>
+            <div class="info-row"><span class="label">Major Specialty:</span><span class="value">Computer Engineering (AI/DS)</span></div>
+            <div class="info-row"><span class="label">Department:</span><span class="value">Computer Engineering</span></div>
+            <div class="info-row"><span class="label">Campus:</span><span class="value">Pillai College of Engineering</span></div>
+        </section>
+
+        <button id="logout-btn" class="btn-logout">De-authenticate & Clear Sessions</button>
+    </main>
+
+    <footer class="nav-footer">
+        <a href="dashboard.html" class="nav-btn">🗺️ Path</a>
+        <a href="leaderboard.html" class="nav-btn">🏆 Ranks</a>
+        <a href="profile.html" class="nav-btn active">👤 Profile</a>
+    </footer>
+
+    <script>
+        if(!localStorage.getItem('authToken')) { window.location.href = 'login-student.html'; }
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            localStorage.removeItem('authToken');
+            window.location.href = 'index.html';
+        });
+    </script>
+    <script src="js/bg-garden.js"></script>
+</body>
+</html>

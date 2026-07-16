@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduAdapt - Game Hub Dashboard</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        #garden-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; pointer-events: none;
+        }
+        .app-header, .content-viewport, .nav-footer { position: relative; z-index: 1; }
+    </style>
+    <script src="js/theme.js"></script>
+</head>
+<body>
+    <button id="theme-toggle-btn" class="btn-theme-toggle" onclick="toggleTheme()">🌙 Dark</button>
+    
+    <canvas id="garden-canvas"></canvas>
+
+    <header class="app-header">
+        <div class="user-info">
+            <h3 id="student-name">HERO: RITIKA</h3>
+            <p>ADAPTIVE LVL <span id="student-level">4</span> CE_AIDS</p>
+        </div>
+        <div class="xp-badge"><span id="xp-counter">1850</span> XP</div>
+    </header>
+
+    <main class="content-viewport">
+        <section class="metric-card">
+            <h4>TRAJECTORY MASTERY METRIC</h4>
+            <div class="progress-bar-container">
+                <div class="progress-fill" style="width: 60%;"></div>
+            </div>
+        </section>
+
+        <section class="roadmap-container">
+            <h4>SELECT YOUR STAGE</h4>
+            <div id="pathway-track" class="track-line"></div>
+        </section>
+    </main>
+
+    <footer class="nav-footer">
+        <a href="dashboard.html" class="nav-btn active">[🗺️ PATH]</a>
+        <a href="leaderboard.html" class="nav-btn">[🏆 RANKS]</a>
+        <a href="profile.html" class="nav-btn">[👤 HERO]</a>
+    </footer>
+
+    <script src="js/dashboard.js"></script>
+    <script src="js/bg-garden.js"></script>
+</body>
+</html>

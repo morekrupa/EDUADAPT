@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Seed Registration</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <script src="js/theme.js"></script>
+</head>
+<body>
+    <button id="theme-toggle-btn" class="btn-theme-toggle" onclick="toggleTheme()">🌙 Dark</button>
+    <canvas id="network-canvas"></canvas>
+    <div class="auth-viewport-wrapper">
+        <div class="auth-container">
+            <h2>Register</h2>
+            <div class="role-badge admin-badge">Register</div>
+            <form id="admin-signup-form">
+                <div class="input-group"><label>Authority Full Name</label><input type="text" id="a-name" required></div>
+                <div class="input-group"><label>Protected Admin Email</label><input type="email" id="a-email" required placeholder="sysadmin@mes.ac.in"></div>
+                <div class="input-group"><label>Master Security Password</label><input type="password" id="a-pass" required></div>
+                <div class="input-group"><label>Confirm Master Credential</label><input type="password" id="a-conf" required></div>
+                <button type="submit" class="btn-submit admin-btn">Initialize System Core</button>
+            </form>
+            <p class="toggle-text">Active Admin Seed? <a href="login-admin.html">Login Portal</a></p>
+        </div>
+    </div>
+    <script src="js/signup-admin.js"></script>
+    <<script src="js/bg-garden.js"></script>
+</body>
+</html>

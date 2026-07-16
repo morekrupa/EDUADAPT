@@ -1,0 +1,36 @@
+.auth-viewport-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+.auth-container {
+    background: var(--bg-card);
+    padding: 28px 20px;
+    border: 6px solid var(--border-color);
+    box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+}
+h2 { text-align: center; font-size: 14px; margin: 0 0 12px 0; text-transform: uppercase; line-height: 1.4; }
+.role-badge {
+    text-align: center;
+    font-size: 8px;
+    padding: 6px;
+    border: 4px dashed var(--border-color);
+    margin-bottom: 24px;
+    text-transform: uppercase;
+}
+.student-badge { background: var(--primary-light); color: var(--btn-primary); }
+.teacher-badge { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+.admin-badge { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+
+.input-group { margin-bottom: 18px; }
+.input-group label { display: block; font-size: 8px; margin-bottom: 8px; text-transform: uppercase; }
+.input-group input { width: 100%; padding: 12px; border: 4px solid var(--border-color); background-color: var(--bg-input); color: var(--text-main); outline: none; }
+
+.auth-container .btn-pixel { width: 100%; margin-top: 10px; }
+.toggle-text { text-align: center; margin-top: 20px; font-size: 8px; text-transform: uppercase; }
+.toggle-text a { color: var(--btn-primary); text-decoration: none; font-weight: bold; }

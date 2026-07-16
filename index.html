@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to EduAdapt</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/landing.css">
+    <script src="js/theme.js"></script>
+</head>
+<body>
+    <button id="theme-toggle-btn" class="btn-theme-toggle" onclick="toggleTheme()">🌙 DARK</button>
+
+    <div class="landing-wrapper">
+        <header class="landing-header">
+            <h1>EduAdapt</h1>
+            <p>AI-Driven Role-Based Adaptive Learning Platform</p>
+        </header>
+
+        <main class="selection-container">
+            <div class="theme-control-row">
+                <h3>Choose Your Portal Role</h3>
+            </div>
+            
+            <div class="role-card student-card" onclick="location.href='login-student.html'">
+                <div class="role-icon">🎓</div>
+                <div class="role-details">
+                    <h4>[STUDENT PORTAL]</h4>
+                    <p>Access adaptive pathway roadmaps and check level masteries.</p>
+                </div>
+            </div>
+
+            <div class="role-card teacher-card" onclick="location.href='login-teacher.html'">
+                <div class="role-icon">🧑‍🏫</div>
+                <div class="role-details">
+                    <h4>[TEACHER PORTAL]</h4>
+                    <p>Track dynamic behavioral analytics and configure stages.</p>
+                </div>
+            </div>
+
+            <div class="role-card admin-card" onclick="location.href='login-admin.html'">
+                <div class="role-icon">⚙️</div>
+                <div class="role-details">
+                    <h4>[ADMIN PORTAL]</h4>
+                    <p>Manage system setups, configurations, and baseline seeds.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/bg-garden.js"></script>
+</body>
+</html>
