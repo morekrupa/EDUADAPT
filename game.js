@@ -39,17 +39,22 @@ function evaluateChoiceSequence(selectedIndexCode, structuralCorrectIndexCode, c
 document.getElementById("next-btn").addEventListener("click", () => {
     const runtimeDurationSec = Math.round((Date.now() - temporalTracker) / 1000);
     
-    fetch('http://127.0.0.1:5000/api/analytics/track-activity', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            studentId: "A622",
-            score: structuralAccumulatedPoints,
-            timeSpentSeconds: runtimeDurationSec
-        })
-    }).finally(() => {
-        window.location.href = 'dashboard.html';
-    });
+   fetch('http://127.0.0.1:5000/api/analytics/track-activity', {
+    method: 'POST',
+    headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+    },
+    body: JSON.stringify({
+        score: structuralAccumulatedPoints,
+        timeSpentSeconds: runtimeDurationSec,
+        lessonId: new URLSearchParams(window.location.search).get('nodeSelectionID'),
+        accuracy: Math.round((structuralAccumulatedPoints / 100) * 100),
+        difficultyLevel: 1
+    })
+}).finally(() => {
+    window.location.href = 'dashboard.html';
+});
 });
 
 bootstrapQuizFrame(engineGeneratedMockPayload);

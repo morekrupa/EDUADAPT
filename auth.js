@@ -11,8 +11,8 @@ document.getElementById('student-login-form').addEventListener('submit', functio
     })
     .then(response => response.json())
     .then(data => {
-        if(data.token) {
-            localStorage.setItem('authToken', data.token);
+        if(data.accesstoken) {
+            localStorage.setItem('authToken', data.accesstoken);
             window.location.href = 'dashboard.html';
         } else {
             alert(data.message || 'Identity assertion failed.');
