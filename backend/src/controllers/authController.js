@@ -49,7 +49,7 @@ const login = async (req, res) => {
       { expiresIn: '7d' }
     );
 
-    res.json({ accessToken, refreshToken, role: user.role });
+    res.json({ accessToken, token: accessToken, refreshToken, role: user.role });
   } catch (error) {
     res.status(500).json({ error: 'Login failed', details: error.message });
   }
