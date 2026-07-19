@@ -15,7 +15,7 @@ document.getElementById('student-login-form').addEventListener('submit', functio
             localStorage.setItem('authToken', data.accesstoken);
             window.location.href = 'dashboard.html';
         } else {
-            alert(data.message || 'Identity assertion failed.');
+            alert(data.error || 'Login failed.');
         }
     })
     .catch(err => {
