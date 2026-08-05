@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduAdapt - Gamified Teacher Dashboard & AI Lab</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN with Dark Mode Config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            pine: '#032b26',
+            grass: '#2eb000',
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Chart.js & Lucide CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-body antialiased flex h-screen overflow-hidden transition-colors duration-200">
+
+  <!-- MES ID LOGIN SCREEN -->
+  <div id="login-screen" class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-5">
+      <div class="flex flex-col items-center text-center space-y-3 pb-2">
+        <div class="p-3 bg-emerald-500/20 rounded-xl border border-emerald-500/30">
+          <i data-lucide="gamepad-2" class="w-7 h-7 text-emerald-600 dark:text-emerald-400"></i>
+        </div>
+        <div>
+          <h1 class="font-pixel text-xs tracking-wider text-emerald-600 dark:text-emerald-400">EduAdapt</h1>
+          <p class="text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-widest mt-1">Teacher Portal Login</p>
+        </div>
+      </div>
+
+      <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">MES ID</label>
+          <input type="text" id="login-mes-id" placeholder="e.g. MES12345" required autocomplete="off"
+            class="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
+          <p id="login-error" class="hidden text-[10px] text-red-500 mt-1">Please enter your MES ID to continue.</p>
+        </div>
+        <button type="submit" class="w-full px-5 py-2.5 bg-emerald-600 font-bold text-white rounded-lg hover:bg-emerald-700 shadow-md">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- TEACHER SETUP / REGISTRATION PREFERENCES SCREEN -->
+  <div id="teacher-setup-screen" class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-[100] flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-2xl w-full my-8 p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-5">
+      <div class="flex items-center space-x-3 border-b dark:border-slate-800 pb-4">
+        <div class="p-2 bg-emerald-500/20 rounded-xl border border-emerald-500/30">
+          <i data-lucide="user-cog" class="w-6 h-6 text-emerald-600 dark:text-emerald-400"></i>
+        </div>
+        <div>
+          <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base">Teacher Registration & Class Preferences</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Tell us your homeroom class and the subjects you teach, so your dashboard only shows what's relevant to you.</p>
+        </div>
+      </div>
+
+      <form id="teacher-setup-form" onsubmit="handleTeacherRegister(event)" class="space-y-5 text-xs">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Full Name</label>
+            <input type="text" id="setup-name" placeholder="e.g. Rachel Adams" required class="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Email</label>
+            <input type="email" id="setup-email" placeholder="rachel@school.edu" required class="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">I am the Class Teacher (Mentor) of:</label>
+          <select id="setup-class-teacher-of" class="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"></select>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-300 mb-2">Subjects I Teach &amp; the Classes I Teach Them In:</label>
+          <div id="subject-class-picker-container" class="space-y-3"></div>
+          <p class="text-[10px] text-slate-400 mt-2">Tick a subject, then select every class-section you teach that subject in. Your dashboard, gamification lab, and course tools will only show these classes and subjects.</p>
+        </div>
+
+        <div class="pt-3 border-t dark:border-slate-800 flex justify-end">
+          <button type="submit" class="px-5 py-2 bg-emerald-600 font-bold text-white rounded-lg hover:bg-emerald-700 shadow-md">Save Preferences & Enter Dashboard</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Sidebar Navigation matching EduAdapt Design -->
+  <aside class="w-64 bg-[#032b26] text-white flex flex-col justify-between shrink-0 shadow-2xl z-20">
+    <div>
+      <!-- Brand Sidebar Header -->
+      <div class="p-5 border-b border-emerald-900/60 flex items-center space-x-3">
+        <div class="p-2 bg-emerald-500/20 rounded-xl border border-emerald-500/30">
+          <i data-lucide="gamepad-2" class="w-6 h-6 text-emerald-400"></i>
+        </div>
+        <div>
+          <h1 class="font-pixel text-xs tracking-wider text-emerald-400">EduAdapt</h1>
+          <p class="text-[10px] text-emerald-200/70 font-semibold uppercase tracking-widest mt-0.5">Teacher Portal</p>
+        </div>
+      </div>
+      
+      <!-- Nav Menu Items matching screenshot menu items -->
+      <nav class="mt-4 px-3 space-y-1 overflow-y-auto max-h-[calc(100vh-250px)]">
+        <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn active flex items-center space-x-3 w-full px-4 py-2.5 rounded-xl text-[11px] font-pixel uppercase tracking-wide transition">
+          <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0"></i>
+          <span>DASHBOARD</span>
+        </button>
+
+        <button onclick="switchTab('gamification')" id="nav-gamification" class="nav-btn flex items-center space-x-3 w-full px-4 py-2.5 rounded-xl text-[11px] font-pixel uppercase tracking-wide transition">
+          <i data-lucide="gamepad-2" class="w-4 h-4 shrink-0"></i>
+          <span>GAMIFICATION LAB</span>
+        </button>
+
+        <button onclick="switchTab('bossbattle')" id="nav-bossbattle" class="nav-btn flex items-center space-x-3 w-full px-4 py-2.5 rounded-xl text-[11px] font-pixel uppercase tracking-wide transition text-amber-400">
+          <i data-lucide="swords" class="w-4 h-4 shrink-0 text-amber-400"></i>
+          <span>BOSS BATTLE</span>
+        </button>
+
+        <button onclick="switchTab('skilltree')" id="nav-skilltree" class="nav-btn flex items-center space-x-3 w-full px-4 py-2.5 rounded-xl text-[11px] font-pixel uppercase tracking-wide transition">
+          <i data-lucide="git-fork" class="w-4 h-4 shrink-0"></i>
+          <span>SKILLS & GUILDS</span>
+        </button>
+
+        <button onclick="switchTab('assessments')" id="nav-assessments" class="nav-btn flex items-center space-x-3 w-full px-4 py-2.5 rounded-xl text-[11px] font-pixel uppercase tracking-wide transition">
+          <i data-lucide="award" class="w-4 h-4 shrink-0"></i>
+          <span>ASSESSMENTS</span>
+        </button>
+
+        <button onclick="switchTab('attendance')" id="nav-attendance" class="nav-btn flex items-center space-x-3 w-full px-4 py-2.5 rounded-xl text-[11px] font-pixel uppercase tracking-wide transition">
+          <i data-lucide="check-square" class="w-4 h-4 shrink-0"></i>
+          <span>ATTENDANCE</span>
+        </button>
+
+        <button onclick="switchTab('announcements')" id="nav-announcements" class="nav-btn flex items-center space-x-3 w-full px-4 py-2.5 rounded-xl text-[11px] font-pixel uppercase tracking-wide transition">
+          <i data-lucide="megaphone" class="w-4 h-4 shrink-0"></i>
+          <span>ANNOUNCEMENTS</span>
+        </button>
+
+        <button onclick="switchTab('calendar')" id="nav-calendar" class="nav-btn flex items-center space-x-3 w-full px-4 py-2.5 rounded-xl text-[11px] font-pixel uppercase tracking-wide transition">
+          <i data-lucide="calendar" class="w-4 h-4 shrink-0"></i>
+          <span>CALENDAR</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Sidebar Bottom Status & Dark Mode Controls -->
+    <div class="p-3 m-3 bg-emerald-950/80 rounded-xl border border-emerald-800/50 space-y-3">
+      <div class="text-center">
+        <div class="flex items-center justify-between text-xs text-emerald-300 font-semibold mb-1">
+          <span>Classroom Level</span>
+          <span class="text-emerald-400 font-pixel text-[10px]">LVL 14</span>
+        </div>
+        <div class="w-full bg-emerald-900 rounded-full h-2 overflow-hidden border border-emerald-800">
+          <div class="bg-emerald-400 h-2 rounded-full transition-all duration-500" style="width: 78%"></div>
+        </div>
+      </div>
+
+      <!-- Edit Teaching Preferences -->
+      <button onclick="editTeacherProfile()" class="w-full py-2 px-3 bg-emerald-900/60 hover:bg-emerald-800/80 text-emerald-200 border border-emerald-700/50 rounded-lg flex items-center space-x-2 text-xs font-bold transition">
+        <i data-lucide="user-cog" class="w-4 h-4 text-emerald-300"></i>
+        <span>Edit Class / Subject Preferences</span>
+      </button>
+
+      <!-- Dark Mode Toggle Button in Sidebar Bottom -->
+      <button onclick="toggleDarkMode()" class="w-full py-2 px-3 bg-emerald-900/60 hover:bg-emerald-800/80 text-emerald-200 border border-emerald-700/50 rounded-lg flex items-center justify-between text-xs font-bold transition">
+        <span class="flex items-center space-x-2">
+          <i data-lucide="sun" class="w-4 h-4 hidden dark:inline text-amber-400"></i>
+          <i data-lucide="moon" class="w-4 h-4 inline dark:hidden text-emerald-300"></i>
+          <span id="dark-mode-text">Dark Mode</span>
+        </span>
+        <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-400" id="dark-mode-badge">OFF</span>
+      </button>
+
+      <!-- Logout Button -->
+      <button onclick="logout()" class="w-full py-2 px-3 bg-emerald-900/60 hover:bg-emerald-800/80 text-emerald-200 border border-emerald-700/50 rounded-lg flex items-center space-x-2 text-xs font-bold transition">
+        <i data-lucide="log-out" class="w-4 h-4 text-emerald-300"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content Wrapper -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Top Header Bar matching Screenshot Design -->
+    <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-8 py-3.5 flex items-center justify-between sticky top-0 z-30 shadow-sm transition-colors">
+      <!-- Breadcrumb Navigation -->
+      <div class="flex items-center space-x-2 font-pixel text-xs">
+        <span class="text-slate-400 dark:text-slate-500">EduAdapt</span>
+        <span class="text-slate-300 dark:text-slate-600 font-sans">›</span>
+        <span id="breadcrumb-active" class="text-slate-800 dark:text-slate-100 font-bold">Dashboard</span>
+      </div>
+
+      <!-- Center Search Bar -->
+      <div class="relative w-96">
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+          <input 
+            type="text" 
+            id="global-search" 
+            onkeyup="handleSearch(this.value)"
+            placeholder="Search courses, students, grading..." 
+            class="w-full pl-10 pr-4 py-2 bg-slate-100/80 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full text-xs font-mono text-slate-700 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:bg-white dark:focus:bg-slate-900 transition"
+          >
+        </div>
+
+        <!-- Search Results Dropdown Overlay -->
+        <div id="search-results-dropdown" class="hidden absolute left-0 right-0 top-full mt-2 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-800 max-h-80 overflow-y-auto z-50 divide-y divide-slate-100 dark:divide-slate-800">
+        <!-- Replace your existing class select dropdown with this updated menu -->
+        </div>
+      </div>
+
+      <!-- Top Right Action Controls -->
+      <div class="flex items-center space-x-4">
+        <!-- Class-Wise Filter Dropdown -->
+        <div class="flex items-center space-x-1.5 bg-slate-100/80 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full pl-3 pr-1 py-1">
+          <i data-lucide="users-round" class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0"></i>
+          <select id="class-filter-dropdown" onchange="setClassFilter(this.value)" class="bg-transparent text-xs font-bold text-slate-700 dark:text-slate-200 outline-none py-1 pr-1"></select>
+        </div>
+
+        <!-- Globe / Language Selector Button -->
+        <div class="relative">
+          <button id="globe-btn" onclick="toggleGlobeMenu()" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition">
+            <i data-lucide="globe" class="w-5 h-5"></i>
+          </button>
+          <div id="globe-menu" class="hidden absolute right-0 mt-2 w-40 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl py-2 z-50 text-xs font-semibold">
+            <button onclick="setLanguage('English')" class="w-full text-left px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center justify-between">
+              <span>English (US)</span>
+              <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-600"></i>
+            </button>
+            <button onclick="setLanguage('Spanish')" class="w-full text-left px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200">Español</button>
+            <button onclick="setLanguage('French')" class="w-full text-left px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200">Français</button>
+          </div>
+        </div>
+
+        <!-- Bell Notifications Icon -->
+        <div class="relative">
+          <button id="notif-btn" onclick="toggleNotifMenu()" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition relative">
+            <i data-lucide="bell" class="w-5 h-5"></i>
+            <span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-rose-500 rounded-full ring-2 ring-white dark:ring-slate-900"></span>
+          </button>
+
+          <div id="notif-menu" class="hidden absolute right-0 mt-2 w-80 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl py-3 z-50 text-xs">
+            <div class="px-4 pb-2 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+              <span class="font-bold text-slate-800 dark:text-slate-100">Notifications</span>
+              <span class="text-[10px] text-emerald-600 bg-emerald-50 dark:bg-emerald-950 dark:text-emerald-300 px-2 py-0.5 rounded-full font-bold">2 New</span>
+            </div>
+            <div class="divide-y divide-slate-100 dark:divide-slate-800 max-h-64 overflow-y-auto">
+              <div class="p-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition cursor-pointer">
+                <p class="font-bold text-slate-800 dark:text-slate-200">Boss Defeated!</p>
+                <p class="text-slate-500 dark:text-slate-400 text-[11px] mt-0.5">Differential Dragon was defeated by Class 10-A (+2,000 XP).</p>
+                <span class="text-[10px] text-slate-400 mt-1 block">3 mins ago</span>
+              </div>
+              <div class="p-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition cursor-pointer">
+                <p class="font-bold text-slate-800 dark:text-slate-200">New Game Completed</p>
+                <p class="text-slate-500 dark:text-slate-400 text-[11px] mt-0.5">Alex Mercer finished "Math Dungeon Boss" with 95% accuracy.</p>
+                <span class="text-[10px] text-slate-400 mt-1 block">15 mins ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Teacher User Profile Tag -->
+        <button onclick="editTeacherProfile()" class="flex items-center space-x-3 border-l pl-4 border-slate-200 dark:border-slate-800 hover:opacity-80 transition" title="Edit class & subject preferences">
+          <div id="header-teacher-avatar" class="w-9 h-9 rounded-full bg-emerald-600 text-white font-bold text-xs flex items-center justify-center shadow-sm border-2 border-emerald-400">
+            TR
+          </div>
+          <div class="hidden sm:block text-left">
+            <p id="header-teacher-name" class="text-xs font-bold leading-none text-slate-800 dark:text-slate-100">Prof. Rachel</p>
+            <p id="header-teacher-role" class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Lead Instructor</p>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Views Container -->
+    <main class="flex-1 overflow-y-auto p-8 space-y-8">
+
+      <!-- VIEW 1: DASHBOARD OVERVIEW -->
+      <section id="view-dashboard" class="tab-content space-y-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <button onclick="switchTab('attendance')" class="text-left bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center space-x-4 hover:border-emerald-400 hover:shadow-md transition cursor-pointer">
+            <div class="p-3 bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 rounded-xl">
+              <i data-lucide="users" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Active Students</p>
+              <h3 class="text-2xl font-black text-slate-800 dark:text-slate-100 mt-0.5" id="dash-active-students-count">48</h3>
+            </div>
+          </button>
+
+          <button onclick="switchTab('gamification')" class="text-left bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center space-x-4 hover:border-amber-400 hover:shadow-md transition cursor-pointer">
+            <div class="p-3 bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400 rounded-xl">
+              <i data-lucide="gamepad-2" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Games Active</p>
+              <h3 class="text-2xl font-black text-slate-800 dark:text-slate-100 mt-0.5" id="dash-active-games-count">6</h3>
+            </div>
+          </button>
+
+          <button onclick="switchTab('assessments')" class="text-left bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center space-x-4 hover:border-sky-400 hover:shadow-md transition cursor-pointer">
+            <div class="p-3 bg-sky-100 dark:bg-sky-950 text-sky-700 dark:text-sky-400 rounded-xl">
+              <i data-lucide="target" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Avg Mastery</p>
+              <h3 class="text-2xl font-black text-slate-800 dark:text-slate-100 mt-0.5" id="dash-avg-mastery">88.4%</h3>
+            </div>
+          </button>
+
+          <button onclick="switchTab('gamification')" class="text-left bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center space-x-4 hover:border-indigo-400 hover:shadow-md transition cursor-pointer">
+            <div class="p-3 bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-400 rounded-xl">
+              <i data-lucide="award" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total XP Earned</p>
+              <h3 class="text-2xl font-black text-slate-800 dark:text-slate-100 mt-0.5" id="dash-total-xp">128,450</h3>
+            </div>
+          </button>
+        </div>
+
+        <!-- Class-Wise Performance Breakdown -->
+        <div class="space-y-3">
+          <div>
+            <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center">
+              <i data-lucide="layout-grid" class="w-4 h-4 mr-2 text-emerald-600 dark:text-emerald-400"></i>
+              <span>Class-Wise Performance (6th &ndash; 10th)</span>
+            </h3>
+            <p class="text-xs text-slate-400">Click a class card to filter the entire dashboard to that class-section.</p>
+          </div>
+          <div id="class-performance-grid" class="grid grid-cols-2 md:grid-cols-5 gap-4"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div class="lg:col-span-2 bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base">Weekly Learning XP Performance</h3>
+                <p class="text-xs text-slate-400">Class engagement based on gamification quests</p>
+              </div>
+              <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-800 flex items-center">
+                <i data-lucide="trending-up" class="w-3.5 h-3.5 mr-1"></i> +24% vs Last Week
+              </span>
+            </div>
+            <div class="h-72 relative">
+              <canvas id="overviewChart"></canvas>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-slate-800 dark:text-slate-100">Generated Games</h3>
+                <button onclick="switchTab('gamification')" class="text-xs text-emerald-600 dark:text-emerald-400 hover:underline font-bold">View All</button>
+              </div>
+              <div id="dash-recent-games-list" class="space-y-3 text-xs"></div>
+            </div>
+            <button onclick="openGameGeneratorModal()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition flex items-center justify-center space-x-2 text-xs shadow-md">
+              <i data-lucide="plus-circle" class="w-4 h-4"></i>
+              <span>Generate New Game</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 2: GAMIFICATION LAB -->
+      <section id="view-gamification" class="tab-content space-y-8 hidden">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100">Gamification Lab</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Generate interactive learning games and analyze student completion metrics.</p>
+          </div>
+          <button onclick="openGameGeneratorModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl font-bold text-xs flex items-center space-x-2 shadow-sm transition">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <span>Generate Game</span>
+          </button>
+        </div>
+
+        <!-- Subject / Course Quick Filters -->
+        <div class="flex items-center flex-wrap gap-2" id="subject-filter-buttons"></div>
+
+        <div class="space-y-4">
+          <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center">
+            <i data-lucide="gamepad-2" class="w-4 h-4 mr-2 text-emerald-600 dark:text-emerald-400"></i>
+            <span>Active & Generated Classroom Games</span>
+          </h3>
+          <div id="games-card-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+        </div>
+
+        <div id="game-analysis-section" class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
+            <div>
+              <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest bg-emerald-50 dark:bg-emerald-950 px-2.5 py-1 rounded-full">Selected Game Analysis</span>
+              <h3 id="selected-game-title" class="text-lg font-bold text-slate-800 dark:text-slate-100 mt-1">Math Dungeon Crawler</h3>
+            </div>
+            <select id="game-select-dropdown" onchange="loadSelectedGameAnalysis(this.value)" class="bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-bold rounded-lg px-3 py-2 text-slate-700 dark:text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500">
+            </select>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700/50 text-center">
+              <p class="text-xs text-slate-400 font-bold uppercase">Completion Rate</p>
+              <p id="analysis-completion-rate" class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1">88%</p>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700/50 text-center">
+              <p class="text-xs text-slate-400 font-bold uppercase">Average Score</p>
+              <p id="analysis-avg-score" class="text-2xl font-black text-sky-600 dark:text-sky-400 mt-1">91 / 100</p>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700/50 text-center">
+              <p class="text-xs text-slate-400 font-bold uppercase">Time Spent (Avg)</p>
+              <p id="analysis-avg-time" class="text-2xl font-black text-amber-600 dark:text-amber-400 mt-1">14.2 Mins</p>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <h4 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Student Performance Distribution</h4>
+            <div class="h-60 relative">
+              <canvas id="gameAnalysisChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NEW VIEW: LIVE CLASSROOM BOSS BATTLE -->
+      <section id="view-bossbattle" class="tab-content space-y-6 hidden">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 flex items-center">
+              <i data-lucide="swords" class="w-6 h-6 mr-2 text-amber-500"></i>
+              <span>Live Classroom Boss Battle Simulator</span>
+            </h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Engage the whole class in a live quiz battle against a monster boss!</p>
+          </div>
+          <button onclick="resetBossBattle()" class="px-4 py-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-xl font-bold text-xs hover:bg-slate-300 transition">Reset Battle</button>
+        </div>
+
+        <div class="bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 p-8 rounded-3xl border border-emerald-800/50 shadow-2xl text-white space-y-6">
+          <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-6">
+              <div class="w-24 h-24 rounded-2xl bg-amber-500/20 border-2 border-amber-400 flex items-center justify-center animate-bounce">
+                <i data-lucide="skull" class="w-12 h-12 text-amber-400"></i>
+              </div>
+              <div>
+                <span class="text-xs font-pixel text-amber-400 uppercase">CHAPTER 4 BOSS</span>
+                <h3 class="text-2xl font-bold font-pixel text-white mt-1">The Differential Dragon</h3>
+                <p class="text-xs text-emerald-200/70 mt-1">Topic: Derivatives & Rate of Change</p>
+              </div>
+            </div>
+
+            <!-- Boss HP Progress -->
+            <div class="w-full md:w-80 space-y-2">
+              <div class="flex justify-between text-xs font-bold font-mono">
+                <span>BOSS HEALTH</span>
+                <span id="boss-hp-text" class="text-rose-400">1000 / 1000 HP</span>
+              </div>
+              <div class="w-full bg-slate-950 rounded-full h-4 p-0.5 border border-rose-500/40">
+                <div id="boss-hp-bar" class="bg-rose-500 h-full rounded-full transition-all duration-300" style="width: 100%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Attack Buttons -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-emerald-800/40">
+            <button onclick="attackBoss(150, 'Correct Question Answered!')" class="p-4 bg-emerald-600/80 hover:bg-emerald-600 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 border border-emerald-400/30 transition shadow-lg">
+              <i data-lucide="zap" class="w-4 h-4 text-amber-300"></i>
+              <span>Correct Answer (-150 HP)</span>
+            </button>
+            <button onclick="attackBoss(300, 'CRITICAL HIT! Squad Combo!')" class="p-4 bg-amber-600/80 hover:bg-amber-600 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 border border-amber-400/30 transition shadow-lg">
+              <i data-lucide="flame" class="w-4 h-4 text-yellow-200"></i>
+              <span>Squad Combo (-300 HP)</span>
+            </button>
+            <button onclick="attackBoss(500, 'ULTRABLAST! Class Victory Hit!')" class="p-4 bg-purple-600/80 hover:bg-purple-600 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 border border-purple-400/30 transition shadow-lg">
+              <i data-lucide="sparkles" class="w-4 h-4 text-pink-300"></i>
+              <span>Ultra Blast (-500 HP)</span>
+            </button>
+          </div>
+
+          <!-- Battle Action Logs -->
+          <div class="bg-slate-950/80 rounded-xl p-4 border border-emerald-900/50 space-y-2">
+            <h4 class="text-[10px] font-pixel text-emerald-400 uppercase">Live Battle Event Log</h4>
+            <div id="boss-battle-log" class="text-xs font-mono text-slate-300 space-y-1 max-h-32 overflow-y-auto">
+              <p class="text-slate-500">[System]: Battle initialized against The Differential Dragon. Ready student answers!</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NEW VIEW: SKILL TREE & GUILDS -->
+      <section id="view-skilltree" class="tab-content space-y-6 hidden">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100">Adaptive Skill Tree & Student Guilds</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Track adaptive learning paths and team performance.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- Skill Tree Node Map -->
+          <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+            <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm">Classroom Adaptive Mastery Tree</h3>
+            <div class="space-y-4 pt-2">
+              <div class="p-4 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/50 rounded-xl flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                  <div class="p-2 bg-emerald-600 text-white rounded-lg"><i data-lucide="check-circle" class="w-5 h-5"></i></div>
+                  <div>
+                    <h4 class="font-bold text-xs text-slate-800 dark:text-slate-100">Node 1: Basic Equations</h4>
+                    <p class="text-[10px] text-emerald-600 dark:text-emerald-400">100% Unlocked by Class</p>
+                  </div>
+                </div>
+                <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400">Completed</span>
+              </div>
+
+              <div class="p-4 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/50 rounded-xl flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                  <div class="p-2 bg-amber-500 text-white rounded-lg"><i data-lucide="unlock" class="w-5 h-5"></i></div>
+                  <div>
+                    <h4 class="font-bold text-xs text-slate-800 dark:text-slate-100">Node 2: Quadratic Functions</h4>
+                    <p class="text-[10px] text-amber-600 dark:text-amber-400">78% Progress • Active Node</p>
+                  </div>
+                </div>
+                <button onclick="alert('Node 2 is currently active for students!')" class="px-3 py-1 bg-amber-500 text-white text-xs font-bold rounded-lg">View Node</button>
+              </div>
+
+              <div class="p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl flex items-center justify-between opacity-60">
+                <div class="flex items-center space-x-3">
+                  <div class="p-2 bg-slate-400 text-white rounded-lg"><i data-lucide="lock" class="w-5 h-5"></i></div>
+                  <div>
+                    <h4 class="font-bold text-xs text-slate-800 dark:text-slate-100">Node 3: Differential Limits</h4>
+                    <p class="text-[10px] text-slate-400">Requires Node 2 Completion</p>
+                  </div>
+                </div>
+                <span class="text-xs font-bold text-slate-400">Locked</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Guild Leaderboard -->
+          <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+            <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm">Classroom Guild Standings</h3>
+            <div id="guild-standings-list" class="space-y-3"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 3: ASSESSMENTS -->
+      <section id="view-assessments" class="tab-content space-y-6 hidden">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100">Assessments & Quizzes</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Review student test scores, quiz submissions, and assign new tasks.</p>
+          </div>
+          <button onclick="createNewAssessment()" class="bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 text-white px-4 py-2 rounded-xl font-bold text-xs flex items-center space-x-2 transition">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>Create Assessment</span>
+          </button>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-[11px] font-bold uppercase text-slate-400">
+                <th class="p-4">Assessment Title</th>
+                <th class="p-4">Subject</th>
+                <th class="p-4">Class</th>
+                <th class="p-4">Due Date</th>
+                <th class="p-4">Submissions</th>
+                <th class="p-4">Status</th>
+                <th class="p-4">Action</th>
+              </tr>
+            </thead>
+            <tbody id="assessments-table-body" class="divide-y divide-slate-100 dark:divide-slate-800 text-xs"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- VIEW 4: ATTENDANCE -->
+      <section id="view-attendance" class="tab-content space-y-6 hidden">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100">Classroom Attendance Register</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Record daily student attendance and track attendance percentages.</p>
+          </div>
+          <div class="flex items-center space-x-3 text-xs">
+            <span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 rounded-lg font-bold" id="att-present-count">Present: 0</span>
+            <span class="px-3 py-1 bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300 rounded-lg font-bold" id="att-absent-count">Absent: 0</span>
+            <button onclick="saveAttendance()" class="bg-emerald-600 text-white px-4 py-2 rounded-xl font-bold hover:bg-emerald-700 transition">Save Register</button>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-[11px] font-bold uppercase text-slate-400">
+                <th class="p-4">Student Name</th>
+                <th class="p-4">Student ID</th>
+                <th class="p-4">Class</th>
+                <th class="p-4">Attendance Streak</th>
+                <th class="p-4">Status Toggle</th>
+              </tr>
+            </thead>
+            <tbody id="attendance-table-body" class="divide-y divide-slate-100 dark:divide-slate-800 text-xs"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- VIEW 5: ANNOUNCEMENTS -->
+      <section id="view-announcements" class="tab-content space-y-6 hidden">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100">Classroom Announcements</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Post updates, quest hints, and assignment notices for students.</p>
+          </div>
+          <button onclick="openAnnouncementModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl font-bold text-xs flex items-center space-x-2 transition">
+            <i data-lucide="megaphone" class="w-4 h-4"></i>
+            <span>Post Announcement</span>
+          </button>
+        </div>
+
+        <div id="announcements-list" class="space-y-4"></div>
+      </section>
+
+      <!-- VIEW 6: CALENDAR -->
+      <section id="view-calendar" class="tab-content space-y-6 hidden">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100">Schedule & Calendar Events</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Track assigned games, exams, and class events across the month.</p>
+          </div>
+          <button onclick="openAddEventModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl font-bold text-xs flex items-center space-x-2 transition">
+            <i data-lucide="calendar-plus" class="w-4 h-4"></i>
+            <span>Add Event</span>
+          </button>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base" id="calendar-month-year">August 2026</h3>
+            <div class="flex space-x-2">
+              <button onclick="changeMonth(-1)" class="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 rounded-lg text-slate-700 dark:text-slate-200 font-bold text-xs">‹ Prev</button>
+              <button onclick="changeMonth(1)" class="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 rounded-lg text-slate-700 dark:text-slate-200 font-bold text-xs">Next ›</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-slate-400 uppercase pb-2 border-b border-slate-100 dark:border-slate-800">
+            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+          </div>
+          <div id="calendar-grid" class="grid grid-cols-7 gap-2"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- FLOATING AI CHATBOT WIDGET -->
+  <div id="ai-chatbot-widget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    <!-- Expandable Chat Panel -->
+    <div id="chatbot-panel" class="hidden w-80 sm:w-96 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 mb-4 overflow-hidden flex flex-col h-[480px]">
+      <div class="p-4 bg-[#032b26] text-white flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <div class="p-1.5 bg-emerald-500/20 rounded-lg border border-emerald-400/30">
+            <i data-lucide="bot" class="w-5 h-5 text-emerald-400"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-xs font-pixel text-emerald-400">EduBot AI Assistant</h3>
+            <p class="text-[10px] text-emerald-200/70">Gamification & Lesson Advisor</p>
+          </div>
+        </div>
+        <button onclick="toggleChatbot()" class="text-slate-300 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+
+      <!-- Message History Container -->
+      <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs bg-slate-50 dark:bg-slate-950/50">
+        <div class="flex items-start space-x-2">
+          <div class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0">AI</div>
+          <div class="p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl rounded-tl-none shadow-sm text-slate-700 dark:text-slate-200">
+            Hello Prof. Rachel! I'm EduBot. How can I help you generate game quests or analyze class progress today?
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick AI Prompts -->
+      <div class="px-3 py-2 bg-slate-100 dark:bg-slate-800/80 border-t border-slate-200 dark:border-slate-800 flex space-x-2 overflow-x-auto text-[10px]">
+        <button onclick="sendQuickPrompt('Suggest a Calculus Boss Quest')" class="px-2.5 py-1 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-full font-bold whitespace-nowrap text-slate-700 dark:text-slate-200 hover:border-emerald-500">💡 Quest Idea</button>
+        <button onclick="sendQuickPrompt('How is Alex Mercer performing?')" class="px-2.5 py-1 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-full font-bold whitespace-nowrap text-slate-700 dark:text-slate-200 hover:border-emerald-500">📊 Student Stats</button>
+      </div>
+
+      <!-- Input Box -->
+      <form onsubmit="handleSendChatMessage(event)" class="p-3 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex items-center space-x-2">
+        <input type="text" id="chat-input" placeholder="Ask EduBot AI..." required class="flex-1 px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-100 outline-none focus:ring-2 focus:ring-emerald-500">
+        <button type="submit" class="p-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl transition"><i data-lucide="send" class="w-4 h-4"></i></button>
+      </form>
+    </div>
+
+    <!-- Floating Toggle Button -->
+    <button onclick="toggleChatbot()" class="p-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full shadow-2xl flex items-center space-x-2 transition border-2 border-emerald-400 group">
+      <i data-lucide="bot" class="w-6 h-6"></i>
+      <span class="font-bold text-xs pr-1">EduBot AI</span>
+    </button>
+  </div>
+
+  <!-- MODALS -->
+  <!-- 1. Game Generator Modal -->
+  <div id="game-generator-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-5">
+      <div class="flex items-center justify-between border-b dark:border-slate-800 pb-3">
+        <div class="flex items-center space-x-2">
+          <i data-lucide="sparkles" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
+          <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base">Generate New Game</h3>
+        </div>
+        <button onclick="closeGameGeneratorModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+
+      <form id="game-generator-form" onsubmit="handleGenerateGame(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Game Title</label>
+          <input type="text" id="gen-game-title" placeholder="e.g. Calculus Dragon Battle" required class="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Subject</label>
+            <select id="gen-game-subject" class="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"></select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Game Format</label>
+            <select id="gen-game-type" class="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
+              <option>Dungeon Crawler</option>
+              <option>Speed Quiz Boss</option>
+              <option>Guild Team Quest</option>
+              <option>Flashcard Runner</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Assign to Class(es)</label>
+          <div id="gen-game-classes" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Difficulty Level</label>
+            <select id="gen-game-diff" class="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
+              <option>Easy (+200 XP)</option>
+              <option>Medium (+500 XP)</option>
+              <option>Hard (+1,000 XP)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Assign Date</label>
+            <input type="date" id="gen-game-date" required class="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
+          </div>
+        </div>
+
+        <div class="pt-3 border-t dark:border-slate-800 flex justify-end space-x-3">
+          <button type="button" onclick="closeGameGeneratorModal()" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-300 rounded-lg">Cancel</button>
+          <button type="submit" class="px-5 py-2 bg-emerald-600 font-bold text-white rounded-lg hover:bg-emerald-700 shadow-md">Generate & Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Add Calendar Event Modal -->
+  <div id="add-event-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4">
+      <div class="flex items-center justify-between border-b dark:border-slate-800 pb-3">
+        <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm">Add Calendar Event / Deadline</h3>
+        <button onclick="closeAddEventModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <form id="add-event-form" onsubmit="handleCreateCalendarEvent(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Event Title</label>
+          <input type="text" id="event-title" placeholder="e.g. Midterm Quiz" required class="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Event Type</label>
+          <select id="event-type" class="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg">
+            <option value="exam">Exam / Assessment</option>
+            <option value="game">Quest / Game</option>
+            <option value="event">Class Event</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Class</label>
+          <select id="event-class" class="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg"></select>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Date</label>
+          <input type="date" id="event-date" required class="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg">
+        </div>
+        <div class="pt-2 flex justify-end space-x-2">
+          <button type="button" onclick="closeAddEventModal()" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-300 rounded-lg">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 bg-emerald-600 font-bold text-white rounded-lg hover:bg-emerald-700">Add to Calendar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Post Announcement Modal -->
+  <div id="announcement-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4">
+      <div class="flex items-center justify-between border-b dark:border-slate-800 pb-3">
+        <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm">Post New Announcement</h3>
+        <button onclick="closeAnnouncementModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <form id="announcement-form" onsubmit="handlePostAnnouncement(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Announcement Title</label>
+          <input type="text" id="ann-title" placeholder="e.g. Guild Boss Event Live!" required class="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Category</label>
+          <select id="ann-category" class="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg">
+            <option value="Important">Important</option>
+            <option value="Quest Hint">Quest Hint</option>
+            <option value="General">General Update</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Class</label>
+          <select id="ann-class" class="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg"></select>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Message Content</label>
+          <textarea id="ann-content" rows="3" placeholder="Write announcement..." required class="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg"></textarea>
+        </div>
+        <div class="pt-2 flex justify-end space-x-2">
+          <button type="button" onclick="closeAnnouncementModal()" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-300 rounded-lg">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 bg-emerald-600 font-bold text-white rounded-lg hover:bg-emerald-700">Post Now</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. Create Assessment Modal -->
+  <div id="assessment-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4">
+      <div class="flex items-center justify-between border-b dark:border-slate-800 pb-3">
+        <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm">Create New Assessment</h3>
+        <button onclick="closeAssessmentModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <form id="assessment-form" onsubmit="handleCreateAssessment(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Assessment Title</label>
+          <input type="text" id="assessment-modal-title-input" placeholder="e.g. Chapter 5 Quiz" required class="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Subject</label>
+            <select id="assessment-modal-subject" class="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg"></select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Class</label>
+            <select id="assessment-modal-class" class="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg"></select>
+          </div>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Due Date</label>
+          <input type="date" id="assessment-modal-date-input" required class="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-lg">
+        </div>
+        <div class="pt-2 flex justify-end space-x-2">
+          <button type="button" onclick="closeAssessmentModal()" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-300 rounded-lg">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 bg-emerald-600 font-bold text-white rounded-lg hover:bg-emerald-700">Create Assessment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

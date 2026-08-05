@@ -1,0 +1,72 @@
+/* Custom Typography */
+.font-pixel {
+  font-family: 'Press Start 2P', cursive;
+}
+
+.font-body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Sidebar Navigation Buttons */
+.nav-btn {
+  color: #a7f3d0;
+  opacity: 0.8;
+  border: 1px solid transparent;
+}
+
+.nav-btn:hover {
+  background-color: rgba(6, 78, 59, 0.6);
+  color: #ffffff;
+  opacity: 1;
+}
+
+.nav-btn.active {
+  background-color: rgba(16, 185, 129, 0.25);
+  border-color: rgba(52, 211, 153, 0.4);
+  color: #34d399;
+  opacity: 1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Smooth Dark Mode Transitions */
+* {
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+/* Subject Filter Buttons (Gamification Lab course buttons) */
+.subject-filter-btn {
+  cursor: pointer;
+}
+
+/* Class Performance Cards on Dashboard */
+#class-performance-grid button {
+  cursor: pointer;
+}
+
+/* Teacher Setup Screen scroll container */
+#teacher-setup-screen {
+  -webkit-overflow-scrolling: touch;
+}
