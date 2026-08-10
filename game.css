@@ -1,0 +1,29 @@
+.auth-viewport-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.auth-container {
+    background: var(--bg-card);
+    padding: 28px 20px;
+    border: 6px solid var(--border-color);
+    box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 600px;
+}
+
+.role-badge {
+    text-align: center;
+    font-size: 8px;
+    padding: 6px;
+    border: 4px dashed var(--border-color);
+    margin-bottom: 20px;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}

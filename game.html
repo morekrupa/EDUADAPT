@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduAdapt - Game Terminal</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/game.css">
+    <script src="js/theme.js"></script>
+    <script src="js/auth-guard.js"></script>
+</head>
+<body>
+    <button id="theme-toggle-btn" class="btn-theme-toggle" onclick="toggleTheme()">🌙 DARK</button>
+
+    <nav class="pixel-nav">
+        <div style="font-weight:bold; font-size:12px; color:var(--btn-primary);">EDUADAPT HUB</div>
+        <div class="nav-links">
+            <a href="dashboard.html" class="nav-link">DASHBOARD</a>
+            <a href="game.html" class="nav-link active">PLAY GAME</a>
+            <a href="progress.html" class="nav-link">PROGRESS</a>
+            <a href="leaderboard.html" class="nav-link">RANKS</a>
+            <a href="profile.html" class="nav-link">PROFILE</a>
+        </div>
+    </nav>
+
+    <div class="auth-viewport-wrapper">
+        <div class="auth-container">
+            <h2 style="text-align:center;">ADAPTIVE GAME ARENA</h2>
+            <div id="class-indicator" class="role-badge">CLASS LOADED</div>
+
+            <div id="step-subject">
+                <h3 style="text-align:center;">SELECT SUBJECT</h3>
+                <div id="subject-list" class="card-grid"></div>
+            </div>
+
+            <div id="step-topic" style="display:none;">
+                <h3 id="selected-subject-title" style="text-align:center;">TOPICS</h3>
+                <div id="topic-list" class="card-grid"></div>
+                <button class="btn-pixel btn-maroon" onclick="resetGameSteps()">← BACK TO SUBJECTS</button>
+            </div>
+
+            <div id="step-game" style="display:none; text-align:center;">
+                <h3 id="active-topic-title">GAME ARENA</h3>
+                <div style="font-size:24px; margin: 20px 0;">🕹️ 👾 🎯</div>
+                <p>SESSION SCORE: <span id="current-score" style="color:var(--btn-accent);">0</span> XP</p>
+                <button id="start-btn" class="btn-pixel btn-green" onclick="playGameSession()">START GAME SESSION</button>
+                <button class="btn-pixel btn-maroon" onclick="resetGameSteps()">EXIT ARENA</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/game.js"></script>
+    <script src="js/bg-garden.js"></script>
+</body>
+</html>

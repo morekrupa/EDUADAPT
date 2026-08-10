@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduAdapt - Admin Seed</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <script src="js/theme.js"></script>
+</head>
+<body>
+    <button id="theme-toggle-btn" class="btn-theme-toggle" onclick="toggleTheme()">🌙 DARK</button>
+
+    <div class="auth-viewport-wrapper">
+        <div class="auth-container">
+            <h2>ADMIN REGISTRATION</h2>
+            <div class="role-badge">BOOTSTRAP ROOT SYSTEM</div>
+            <form onsubmit="handleAdminSignup(event)">
+                <div class="input-group">
+                    <label>Admin Full Name</label>
+                    <input type="text" required placeholder="System Admin">
+                </div>
+                <div class="input-group">
+                    <label>Protected Email</label>
+                    <input type="email" required placeholder="admin@mes.ac.in">
+                </div>
+                <div class="input-group">
+                    <label>Master Password</label>
+                    <input type="password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn-pixel btn-maroon">BOOTSTRAP SYSTEM</button>
+            </form>
+            <p class="toggle-text"><a href="login-admin.html">Existing Admin? Login</a></p>
+        </div>
+    </div>
+
+    <script src="js/signup-admin.js"></script>
+    <script src="js/bg-garden.js"></script>
+</body>
+</html>

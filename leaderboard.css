@@ -1,0 +1,35 @@
+.card-pixel {
+    background: var(--bg-card);
+    padding: 24px;
+    border: 6px solid var(--border-color);
+    box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.25);
+    margin: 20px auto;
+}
+
+.leader-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    border: 3px solid var(--border-color);
+    margin-bottom: 8px;
+    background: var(--bg-input);
+}
+
+.leader-row.podium { background: var(--btn-accent); color: #000; font-weight: bold; }
+
+.badge-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.badge-card {
+    border: 4px solid var(--border-color);
+    padding: 12px;
+    text-align: center;
+    background: var(--bg-input);
+}
+
+.badge-card.locked { opacity: 0.5; filter: grayscale(100%); }
+.badge-icon { font-size: 24px; margin-bottom: 8px; }

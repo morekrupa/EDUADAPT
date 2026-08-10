@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduAdapt - Select Role</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/theme.js"></script>
+</head>
+<body>
+    <button id="theme-toggle-btn" class="btn-theme-toggle" onclick="toggleTheme()">🌙 DARK</button>
+
+    <div class="auth-viewport-wrapper">
+        <div class="auth-container">
+            <h1>EDUADAPT</h1>
+            <p style="text-align:center; font-size: 8px; margin-bottom: 20px;">AI ADAPTIVE LEARNING SYSTEM</p>
+            
+            <div class="role-badge">SELECT PORTAL ACCESS ROLE</div>
+
+            <button class="btn-pixel btn-maroon" onclick="navigateToRole('login-admin.html')">⚙️ ADMIN PORTAL</button>
+            <button class="btn-pixel btn-green" onclick="navigateToRole('login-teacher.html')">🧑‍🏫 TEACHER PORTAL</button>
+            <button class="btn-pixel btn-gold" onclick="navigateToRole('login-student.html')">🎓 STUDENT PORTAL</button>
+        </div>
+    </div>
+
+    <script src="js/index.js"></script>
+    <script src="js/bg-garden.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduAdapt - Progress Tracking</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/progress.css">
+    <script src="js/theme.js"></script>
+    <script src="js/auth-guard.js"></script>
+</head>
+<body>
+    <button id="theme-toggle-btn" class="btn-theme-toggle" onclick="toggleTheme()">🌙 DARK</button>
+
+    <nav class="pixel-nav">
+        <div style="font-weight:bold; font-size:12px; color:var(--btn-primary);">EDUADAPT HUB</div>
+        <div class="nav-links">
+            <a href="dashboard.html" class="nav-link">DASHBOARD</a>
+            <a href="game.html" class="nav-link">PLAY GAME</a>
+            <a href="progress.html" class="nav-link active">PROGRESS</a>
+            <a href="leaderboard.html" class="nav-link">RANKS</a>
+            <a href="profile.html" class="nav-link">PROFILE</a>
+        </div>
+    </nav>
+
+    <div style="max-width: 600px; margin: 20px auto; padding: 0 16px;">
+        <div class="card-pixel">
+            <h2 style="text-align:center;">MASTERY METRICS</h2>
+            
+            <div style="margin-bottom: 20px;">
+                <p>MATHEMATICS (85%)</p>
+                <div class="progress-bar-container">
+                    <div class="progress-fill" style="width: 85%;"></div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <p>SCIENCE (90%)</p>
+                <div class="progress-bar-container">
+                    <div class="progress-fill" style="width: 90%;"></div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <p>ENGLISH SYNTAX (78%)</p>
+                <div class="progress-bar-container">
+                    <div class="progress-fill" style="width: 78%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/progress.js"></script>
+    <script src="js/bg-garden.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduAdapt - Standings Matrix</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/leaderboard.css">
+    <script src="js/theme.js"></script>
+    <script src="js/auth-guard.js"></script>
+</head>
+<body>
+    <button id="theme-toggle-btn" class="btn-theme-toggle" onclick="toggleTheme()">🌙 DARK</button>
+
+    <nav class="pixel-nav">
+        <div style="font-weight:bold; font-size:12px; color:var(--btn-primary);">EDUADAPT HUB</div>
+        <div class="nav-links">
+            <a href="dashboard.html" class="nav-link">DASHBOARD</a>
+            <a href="game.html" class="nav-link">PLAY GAME</a>
+            <a href="progress.html" class="nav-link">PROGRESS</a>
+            <a href="leaderboard.html" class="nav-link active">RANKS</a>
+            <a href="profile.html" class="nav-link">PROFILE</a>
+        </div>
+    </nav>
+
+    <div style="max-width: 600px; margin: 20px auto; padding: 0 16px;">
+        <div class="card-pixel">
+            <h2 style="text-align:center;">PEER LEADERBOARD</h2>
+            <div class="leader-row podium">🥇 1. RITIKA J. <span>2450 XP</span></div>
+            <div class="leader-row podium">🥈 2. MEGHA M. <span>2300 XP</span></div>
+            <div class="leader-row podium">🥉 3. KRUPA M. <span>2150 XP</span></div>
+            <div class="leader-row">4. JANHAVI P. <span>1980 XP</span></div>
+        </div>
+
+        <div class="card-pixel">
+            <h2 style="text-align:center;">ACHIEVEMENT BADGES</h2>
+            <div class="badge-grid">
+                <div class="badge-card">
+                    <div class="badge-icon">🔥</div>
+                    <p style="font-size:7px;">STREAK HERO</p>
+                </div>
+                <div class="badge-card">
+                    <div class="badge-icon">🧠</div>
+                    <p style="font-size:7px;">BAYESIAN MASTER</p>
+                </div>
+                <div class="badge-card locked">
+                    <div class="badge-icon">👑</div>
+                    <p style="font-size:7px;">TOP RANKER</p>
+                </div>
+                <div class="badge-card locked">
+                    <div class="badge-icon">⚡</div>
+                    <p style="font-size:7px;">SPEED RUNNER</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/leaderboard.js"></script>
+    <script src="js/bg-garden.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduAdapt - Admin Login</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <script src="js/theme.js"></script>
+</head>
+<body>
+    <button id="theme-toggle-btn" class="btn-theme-toggle" onclick="toggleTheme()">🌙 DARK</button>
+
+    <div class="auth-viewport-wrapper">
+        <div class="auth-container">
+            <h2>ADMIN LOGIN</h2>
+            <div class="role-badge">AUTHENTICATE SYSTEM ROOT</div>
+            <form onsubmit="handleAdminLogin(event)">
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" required placeholder="admin@mes.ac.in">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn-pixel btn-maroon">LOGIN</button>
+                
+                <div class="divider">- OR -</div>
+                <button type="button" class="btn-pixel btn-google" onclick="handleGoogleLogin()">🌐 GOOGLE SIGN IN</button>
+            </form>
+            <p class="toggle-text"><a href="signup-admin.html">Bootstrap System Seed</a></p>
+            <p class="toggle-text"><a href="index.html">← Roles Selection</a></p>
+        </div>
+    </div>
+
+    <script src="js/login-admin.js"></script>
+    <script src="js/bg-garden.js"></script>
+</body>
+</html>

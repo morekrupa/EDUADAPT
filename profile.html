@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduAdapt - Hero Profile</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <script src="js/theme.js"></script>
+    <script src="js/auth-guard.js"></script>
+</head>
+<body>
+    <button id="theme-toggle-btn" class="btn-theme-toggle" onclick="toggleTheme()">🌙 DARK</button>
+
+    <nav class="pixel-nav">
+        <div style="font-weight:bold; font-size:12px; color:var(--btn-primary);">EDUADAPT HUB</div>
+        <div class="nav-links">
+            <a href="dashboard.html" class="nav-link">DASHBOARD</a>
+            <a href="game.html" class="nav-link">PLAY GAME</a>
+            <a href="progress.html" class="nav-link">PROGRESS</a>
+            <a href="leaderboard.html" class="nav-link">RANKS</a>
+            <a href="profile.html" class="nav-link active">PROFILE</a>
+        </div>
+    </nav>
+
+    <div class="auth-viewport-wrapper">
+        <div class="auth-container">
+            <h2 style="text-align:center;">HERO PROFILE</h2>
+            <div class="role-badge" style="text-align:center; padding:6px; border:4px dashed var(--border-color); margin-bottom:20px;">STUDENT DATA FORM</div>
+            <form onsubmit="saveProfile(event)">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="p-name" required>
+                </div>
+                <div class="input-group">
+                    <label>Class Standard</label>
+                    <select id="p-class" required>
+                        <option value="Class 10">Class 10</option>
+                        <option value="Class 11">Class 11</option>
+                        <option value="Class 12">Class 12</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="p-email" required readonly style="opacity: 0.6;">
+                </div>
+                <button type="submit" class="btn-pixel btn-gold">UPDATE PROFILE</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/profile.js"></script>
+    <script src="js/bg-garden.js"></script>
+</body>
+</html>

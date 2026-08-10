@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduAdapt - Teacher Registration</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <script src="js/theme.js"></script>
+    <script src="js/auth-guard.js"></script>
+</head>
+<body>
+    <button id="theme-toggle-btn" class="btn-theme-toggle" onclick="toggleTheme()">🌙 DARK</button>
+
+    <div class="auth-viewport-wrapper">
+        <div class="auth-container">
+            <h2>TEACHER REGISTRATION</h2>
+            <div class="role-badge">FACULTY ONBOARDING</div>
+            <form onsubmit="handleTeacherSignup(event)">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" required placeholder="Prof. Smith">
+                </div>
+                <div class="input-group">
+                    <label>College / Admin ID</label>
+                    <input type="text" required placeholder="PCE-SAN-2026">
+                </div>
+                <div class="input-group">
+                    <label>Faculty Email</label>
+                    <input type="email" required placeholder="faculty@mes.ac.in">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn-pixel btn-green">REGISTER FACULTY</button>
+            </form>
+            <p class="toggle-text"><a href="login-teacher.html">Already Registered? Login</a></p>
+        </div>
+    </div>
+
+    <script src="js/signup-teacher.js"></script>
+    <script src="js/bg-garden.js"></script>
+</body>
+</html>

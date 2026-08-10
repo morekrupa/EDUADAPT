@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduAdapt - Student Signup</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <script src="js/theme.js"></script>
+    <script src="js/auth-guard.js"></script>
+</head>
+<body>
+    <button id="theme-toggle-btn" class="btn-theme-toggle" onclick="toggleTheme()">🌙 DARK</button>
+
+    <div class="auth-viewport-wrapper">
+        <div class="auth-container">
+            <h2>STUDENT REGISTRATION</h2>
+            <div class="role-badge">ACCOUNT INITIALIZATION</div>
+            
+            <form onsubmit="handleStudentSignup(event)">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="s-name" required placeholder="Ritika Joshi">
+                </div>
+                <div class="input-group">
+                    <label>Class / Standard</label>
+                    <select id="s-class" required>
+                        <option value="Class 10">Class 10</option>
+                        <option value="Class 11">Class 11</option>
+                        <option value="Class 12">Class 12</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="s-email" autocomplete="username" required placeholder="student@student.mes.ac.in">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="s-pass" autocomplete="new-password" required placeholder="••••••••">
+                </div>
+                
+                <button type="submit" class="btn-pixel btn-gold">CREATE ACCOUNT</button>
+                
+                <div class="divider">- OR -</div>
+                <button type="button" class="btn-pixel btn-google" onclick="handleStudentGoogleSignup()">🌐 SIGN UP WITH GOOGLE</button>
+            </form>
+            
+            <p class="toggle-text"><a href="login-student.html">Existing Student? Login</a></p>
+            <p class="toggle-text"><a href="index.html">← Roles Selection</a></p>
+        </div>
+    </div>
+
+    <script src="js/signup-student.js"></script>
+    <script src="js/bg-garden.js"></script>
+</body>
+</html>
