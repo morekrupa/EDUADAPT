@@ -20,7 +20,7 @@ const calculateDifficulty = ({ mastery, recentSessions = [], topicHistory = [] }
   const hints = attempts ? topicHistory.filter((x) => x.hintUsage).length / attempts : 0;
   const skips = recentSessions.length ? recentSessions.filter((x) => x.status === 'SKIPPED').length / recentSessions.length : 0;
 
-  let score = Number(mastery?.masteryScore || 0) * 0.55 + accuracy * 100 * 0.45;
+  let score = Number(mastery?.masteryScore || 0)* 100 * 0.55 + accuracy * 100 * 0.45;
   if (avgTime > 120) score -= 10;
   else if (avgTime > 0 && avgTime < 35) score += 5;
   score -= hints * 12;
