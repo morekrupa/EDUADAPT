@@ -1,11 +1,19 @@
-// Called inside a transaction (tx) from gameSessionService.
+// Recalculate a student's course leaderboard from XP earned by game sessions.
+// The score fallback keeps older sessions visible while the new XP system rolls out.
 const recalculateLeaderboard = async (tx, { studentId, courseId }) => {
-  // Aggregation query: sum this student's scores across all lessons in this course
-  const agg = await tx.gameSession.aggregate({
+  const sessions = await tx.gameSession.findMany({
     where: { studentId, lesson: { courseId } },
-    _sum: { score: true },
+    select: { id: true, score: true, xpEarned: true },
   });
-  const totalPoints = agg._sum.score || 0;
+
+  const sessionIds = sessions.map((session) => session.id);
+  const transactions = sessionIds.length
+    ? await tx.xPTransaction.findMany({ where: { sessionId: { in: sessionIds } }, select: { xpAmount: true } })
+    : [];
+  const transactionPoints = transactions.reduce((sum, item) => sum + item.xpAmount, 0);
+  const earnedSessionXp = sessions.reduce((sum, session) => sum + (session.xpEarned || 0), 0);
+  const legacyPoints = sessions.reduce((sum, session) => sum + (session.score || 0), 0);
+  const totalPoints = transactionPoints || earnedSessionXp || legacyPoints;
 
   await tx.leaderboard.upsert({
     where: { studentId_courseId: { studentId, courseId } },
@@ -13,25 +21,19 @@ const recalculateLeaderboard = async (tx, { studentId, courseId }) => {
     create: { studentId, courseId, totalPoints, rank: 0 },
   });
 
-  // Re-rank everyone in this course's leaderboard, highest points first
   const entries = await tx.leaderboard.findMany({
     where: { courseId },
-    orderBy: { totalPoints: 'desc' },
+    orderBy: [{ totalPoints: 'desc' }, { updatedAt: 'asc' }],
   });
 
-  for (let i = 0; i < entries.length; i++) {
-    const correctRank = i + 1;
-    if (entries[i].rank !== correctRank) {
-      await tx.leaderboard.update({
-        where: { id: entries[i].id },
-        data: { rank: correctRank },
-      });
+  for (let i = 0; i < entries.length; i += 1) {
+    const rank = i + 1;
+    if (entries[i].rank !== rank) {
+      await tx.leaderboard.update({ where: { id: entries[i].id }, data: { rank } });
     }
   }
 
-  return tx.leaderboard.findUnique({
-    where: { studentId_courseId: { studentId, courseId } },
-  });
+  return tx.leaderboard.findUnique({ where: { studentId_courseId: { studentId, courseId } } });
 };
 
 module.exports = { recalculateLeaderboard };
