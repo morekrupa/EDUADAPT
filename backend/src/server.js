@@ -18,11 +18,21 @@ const { verifyToken, checkRole } = require('./middleware/authMiddleware');
 const { login, register } = require('./controllers/authController');
 const schoolService = require('./services/schoolService');
 const prisma = require('./prismaClient');
+const session = require('express-session');
+const passport = require('./config/passport');
+const googleAuthRoutes = require('./routes/googleAuthRoutes');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // ── Member 1 alias routes ──────────────────────────────
 
@@ -153,6 +163,7 @@ app.use('/api/teacher', teacherRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/ai', aiRoutes);
 app.use(errorHandler);
+app.use('/api/auth', googleAuthRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'EduAdapt API is running' });
