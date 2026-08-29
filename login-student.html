@@ -16,7 +16,7 @@
             <h2>SIGN IN</h2>
             <div class="role-badge student-badge">STUDENT PORTAL</div>
             
-            <div class="login-fields-container">
+            <form id="student-login-form">
                 <div class="input-group">
                     <label for="log-email">Email Address</label>
                     <input type="email" id="log-email" required placeholder="student@student.mes.ac.in">
@@ -26,16 +26,23 @@
                     <input type="password" id="log-pass" required placeholder="••••••••">
                 </div>
                 
-                <button type="button" class="btn-pixel btn-maroon" onclick="localStorage.setItem('authToken', 'mock_verified_session'); window.location.href='dashboard.html';">
+                <button type="submit" class="btn-pixel btn-maroon">
                     Authenticate Entry
                 </button>
-            </div>
+
+                <div class="divider">- OR -</div>
+                <button type="button" class="btn-pixel btn-google" 
+                    onclick="window.location.href='http://127.0.0.1:5000/api/auth/google'">
+                    🌐 GOOGLE SIGN IN
+                </button>
+            </form>
             
             <p class="toggle-text">Need an account? <a href="signup-student.html">Create One Here</a></p>
             <p class="toggle-text"><a href="index.html">← Alternate Portal Roles</a></p>
         </div>
     </div>
 
+    <script src="js/auth.js"></script>
     <script src="js/bg-garden.js"></script>
 </body>
 </html>

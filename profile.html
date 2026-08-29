@@ -14,8 +14,9 @@
         <div class="avatar-container">
             <div class="avatar-placeholder">🎓</div>
         </div>
-        <h2 id="prof-name">Krupa More</h2>
-        <p id="prof-email">student@student.mes.ac.in</p>
+        <h2 id="prof-name">Loading...</h2>
+        <p id="prof-email">Loading...</p>
+        <p id="prof-role"></p>
     </header>
 
     <main class="profile-viewport">
@@ -29,10 +30,19 @@
 
         <section class="info-group">
             <h3>Academic Vector Profiles</h3>
-            <div class="info-row"><span class="label">Roll Allocation:</span><span class="value">A 6 3 5</span></div>
-            <div class="info-row"><span class="label">Major Specialty:</span><span class="value">Computer Engineering (AI/DS)</span></div>
-            <div class="info-row"><span class="label">Department:</span><span class="value">Computer Engineering</span></div>
-            <div class="info-row"><span class="label">Campus:</span><span class="value">Pillai College of Engineering</span></div>
+            <div class="info-row">
+                <span class="label">Campus:</span>
+                <span class="value">Pillai College of Engineering</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Major Specialty:</span>
+                <span class="value">Computer Engineering (AI/DS)</span>
+            </div>
+        </section>
+
+        <section class="info-group">
+            <h3>My Badges</h3>
+            <div id="badges-list">Loading...</div>
         </section>
 
         <button id="logout-btn" class="btn-logout">De-authenticate & Clear Sessions</button>
@@ -45,9 +55,39 @@
     </footer>
 
     <script>
-        if(!localStorage.getItem('authToken')) { window.location.href = 'login-student.html'; }
+        const token = localStorage.getItem('authToken');
+        const userId = localStorage.getItem('userId');
+        const BASE_URL = 'http://127.0.0.1:5000';
+
+        if (!token) { window.location.href = 'login-student.html'; }
+
+        // Load real profile
+        fetch(`${BASE_URL}/api/users/me`, {
+            headers: { 'Authorization': 'Bearer ' + token }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.user) {
+                document.getElementById('prof-name').innerText = data.user.name;
+                document.getElementById('prof-email').innerText = data.user.email;
+                document.getElementById('prof-role').innerText = data.user.role;
+            } else {
+                localStorage.removeItem('authToken');
+                window.location.href = 'login-student.html';
+            }
+        })
+        .catch(err => console.error('Failed to load profile:', err));
+
+        // Load real badges
+        // Badges come back from game session responses as newBadges
+        // For now show a placeholder message
+        document.getElementById('badges-list').innerHTML = 
+            '<p>Play games to earn badges!</p>';
+
         document.getElementById('logout-btn').addEventListener('click', () => {
             localStorage.removeItem('authToken');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('userRole');
             window.location.href = 'index.html';
         });
     </script>

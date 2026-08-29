@@ -13,6 +13,7 @@ document.getElementById('student-login-form').addEventListener('submit', functio
     .then(data => {
         if(data.accesstoken) {
             localStorage.setItem('authToken', data.accesstoken);
+            localStorage.setItem('userId', data.userId);
             window.location.href = 'dashboard.html';
         } else {
             alert(data.error || 'Login failed.');

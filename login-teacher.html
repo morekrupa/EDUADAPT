@@ -25,10 +25,31 @@
         </div>
     </div>
     <script>
-        document.getElementById('teacher-login-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert("Teacher operations dash layout will load here once backend microservices are ready!");
-        });
+    const BASE_URL = 'http://127.0.0.1:5000';
+    document.getElementById('teacher-login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.querySelector('#teacher-login-form input[type="email"]').value;
+        const password = document.querySelector('#teacher-login-form input[type="password"]').value;
+
+        try {
+            const res = await fetch(`${BASE_URL}/api/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            if (data.accessToken && data.role === 'TEACHER') {
+                localStorage.setItem('authToken', data.accessToken);
+                localStorage.setItem('userId', data.userId);
+                localStorage.setItem('userRole', data.role);
+                window.location.href = 'dashboard.html';
+            } else {
+                alert(data.error || 'Login failed. Make sure you are a teacher.');
+            }
+        } catch (err) {
+            alert('Server unreachable. Please try again.');
+        }
+     });
     </script>
     <script src="js/bg-garden.js"></script>
 </body>

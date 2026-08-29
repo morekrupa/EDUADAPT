@@ -20,25 +20,47 @@
     
     <canvas id="garden-canvas"></canvas>
 
+    <!-- Google OAuth token extraction — runs before anything else -->
+    <script>
+        // If redirected from Google OAuth, extract token from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const googleToken = urlParams.get('token');
+        if (googleToken) {
+            localStorage.setItem('authToken', googleToken);
+            // Clean the token from URL so it's not visible
+            window.history.replaceState({}, document.title, 'dashboard.html');
+        }
+
+        // If no token at all — redirect to login
+        if (!localStorage.getItem('authToken')) {
+            window.location.href = 'login-student.html';
+        }
+    </script>
+
     <header class="app-header">
         <div class="user-info">
-            <h3 id="student-name">HERO: RITIKA</h3>
-            <p>ADAPTIVE LVL <span id="student-level">4</span> CE_AIDS</p>
+            <h3 id="student-name">Loading...</h3>
+            <p>ADAPTIVE LVL <span id="student-level">-</span></p>
         </div>
-        <div class="xp-badge"><span id="xp-counter">1850</span> XP</div>
+        <div class="xp-badge"><span id="xp-counter">0</span> XP</div>
     </header>
 
     <main class="content-viewport">
         <section class="metric-card">
             <h4>TRAJECTORY MASTERY METRIC</h4>
             <div class="progress-bar-container">
-                <div class="progress-fill" style="width: 60%;"></div>
+                <div class="progress-fill" id="mastery-bar" style="width: 0%;"></div>
             </div>
         </section>
 
         <section class="roadmap-container">
             <h4>SELECT YOUR STAGE</h4>
             <div id="pathway-track" class="track-line"></div>
+        </section>
+
+        <section class="metric-card">
+            <h4>YOUR NOTIFICATIONS</h4>
+            <div id="notifications-list">Loading...</div>
         </section>
     </main>
 

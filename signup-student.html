@@ -16,12 +16,33 @@
             <h2>Register</h2>
             <div class="role-badge student-badge">Student Account Initialization</div>
             <form id="student-signup-form">
-                <div class="input-group"><label>Full Name</label><input type="text" id="s-name" required placeholder="e.g., Krupa More"></div>
-                <div class="input-group"><label>Class Identifier ID (Required)</label><input type="text" id="s-class-id" required placeholder="e.g., PCE-AIDS-B"></div>
-                <div class="input-group"><label>Email Address</label><input type="email" id="s-email" required placeholder="username@student.mes.ac.in"></div>
-                <div class="input-group"><label>Password</label><input type="password" id="s-pass" required placeholder="Minimum 8 characters"></div>
-                <div class="input-group"><label>Confirm Verification Password</label><input type="password" id="s-conf" required placeholder="Repeat chosen credentials"></div>
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="s-name" required placeholder="e.g., Krupa More">
+                </div>
+                <div class="input-group">
+                    <label>School ID (ask your admin for this)</label>
+                    <input type="text" id="s-class-id" required placeholder="Paste your School ID here">
+                </div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="s-email" required placeholder="username@student.mes.ac.in">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="s-pass" required placeholder="Minimum 8 characters">
+                </div>
+                <div class="input-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="s-conf" required placeholder="Repeat chosen credentials">
+                </div>
                 <button type="submit" class="btn-submit student-btn">Deploy Student Profile</button>
+
+                <div class="divider">- OR -</div>
+                <button type="button" class="btn-pixel btn-google"
+                    onclick="window.location.href='http://127.0.0.1:5000/api/auth/google'">
+                    🌐 SIGN UP WITH GOOGLE
+                </button>
             </form>
             <p class="toggle-text">Possess a verified account? <a href="login-student.html">Login Here</a></p>
         </div>
