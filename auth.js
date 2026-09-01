@@ -11,8 +11,8 @@ document.getElementById('student-login-form').addEventListener('submit', functio
     })
     .then(response => response.json())
     .then(data => {
-        if(data.accesstoken) {
-            localStorage.setItem('authToken', data.accesstoken);
+        if(data.accessToken) {
+            localStorage.setItem('authToken', data.accessToken);
             localStorage.setItem('userId', data.userId);
             window.location.href = 'dashboard.html';
         } else {
