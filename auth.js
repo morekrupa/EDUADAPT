@@ -20,8 +20,7 @@ document.getElementById('student-login-form').addEventListener('submit', functio
         }
     })
     .catch(err => {
-        console.warn('Network API Target unreachable - transitioning execution to mock session loops.');
-        localStorage.setItem('authToken', 'mock_verified_session');
-        window.location.href = 'dashboard.html';
+        console.error('Login request failed:', err);
+        alert('Server unreachable. Please try again.');
     });
 });
